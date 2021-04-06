@@ -124,6 +124,10 @@ int* tabuSearch(GraphInfo *graph_info, int color_number, int max_iteration, unsi
 	}
 
 	/* Destroy Variables */
+	for(i = 0; i < graph_info->vertice_number; i++){
+		free(tabu[i]);
+	}
+	free(tabu);
 	destroyList(move_candidates);
 	free(colors);
 	free(new_solution);
@@ -131,6 +135,7 @@ int* tabuSearch(GraphInfo *graph_info, int color_number, int max_iteration, unsi
 	free(aspiration_level);
 
 	if(conflict_count != 0){
+		free(solution);
 		return NULL;
 	}else{
 		return solution;	
