@@ -19,7 +19,7 @@ int* tabuSearch(GraphInfo *graph_info, int color_number, int max_iteration, unsi
 
 	int *colors, *solution, *new_solution, **tabu, *move_candidates_bkp, *aspiration_level;
 	int node, random_node, new_color, iteration = 0, reps = 100;
-	int conflict_count, new_conflict_count, length_move_candidates , i, j, k;
+	int conflict_count, new_conflict_count, aspiration_value, length_move_candidates , i, j, k;
 
 	/* Colors are represented by numbers, [0, 1, ..., k-1] */
 	colors = setupColor(color_number);
@@ -42,8 +42,9 @@ int* tabuSearch(GraphInfo *graph_info, int color_number, int max_iteration, unsi
 	/* Initial Aspiration Level
 	* A(z) is represented by Vector
 	*/
-	aspiration_level = (int *)malloc(graph_info->vertice_number * sizeof(int));
-	resetVector(aspiration_level, graph_info->vertice_number);
+	aspiration_level = (int *)malloc(graph_info->edge_number * sizeof(int));
+	/* The reset value is -10 */
+	resetAspirationLevel(aspiration_level, graph_info->edge_number);
 
 	/* Initial Move Candidates Bkp */
 	move_candidates_bkp = (int*)malloc(graph_info->vertice_number * sizeof(int));
@@ -93,8 +94,14 @@ int* tabuSearch(GraphInfo *graph_info, int color_number, int max_iteration, unsi
 			}
 			/* Verify if found an improved solution */
 			if(new_conflict_count < conflict_count){
+				/* Set aspiration value */
+				if(aspiration_level[conflict_count] == -10){
+					aspiration_value = conflict_count - 1;
+				}else{
+					aspiration_value = aspiration_level[conflict_count];
+				}
 				/* Verify the cost */
-				if(new_conflict_count <= aspiration_level[conflict_count] || new_conflict_count <= conflict_count - 1){
+				if(new_conflict_count <= aspiration_value){
 					/* Set A(f(s)) = f(s') - 1 */
 					aspiration_level[conflict_count] = new_conflict_count - 1;
 					/* Permit Tabu Move if it is better any prior */
@@ -113,11 +120,11 @@ int* tabuSearch(GraphInfo *graph_info, int color_number, int max_iteration, unsi
 		}
 
 		/* At this point, either found a better solution,
-        *  or ran out of reps, using the last solution generated 
-        */
+		*  or ran out of reps, using the last solution generated 
+		*/
 
 		/* Add Tabu Status the current node color (Bad Move) */
-		tabu[node][solution[new_color]] = 1;
+		tabu[node][solution[node]] = 1;
 		/* Set new solution */
 		copySolution(solution, new_solution, graph_info->vertice_number);
 		iteration++;

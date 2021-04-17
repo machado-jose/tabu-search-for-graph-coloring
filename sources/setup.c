@@ -109,6 +109,13 @@ void resetVector(int* vector, int n){
 	}
 }
 
+void resetAspirationLevel(int* vector, int n){
+	int i;
+	for(i = 0; i < n; i++){
+		vector[i] = -10;
+	}
+}
+
 void setCandidates(PtList move_candidates, int* move_candidates_bkp, int n){
 	int i;
 	for(i = 0; i < n; i++){
