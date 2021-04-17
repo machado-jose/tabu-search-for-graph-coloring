@@ -24,5 +24,6 @@ int** setupTabuTable(int vertice_number, int color_number);
 void resetVector(int* vector, int n);
 void setCandidates(PtList move_candidates, int* move_candidates_bkp, int n);
 void copySolution(int* new_solution, int* solution, int n);
+void resetAspirationLevel(int* vector, int n);
 
 #endif
