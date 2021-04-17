@@ -23,4 +23,4 @@ After the compilation, run:
  
 ## Observation
 
-In the example file, it is important separate the number with **tab** for program can read the data successful
+In the example file, it is important separate the number with **space** for program can read the data successful
