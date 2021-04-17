@@ -30,9 +30,9 @@ void setupGraph(GraphInfo *graph_info, const char *path){
 
 	/* Gets vertice and edge numbers*/
 	fgets(line, MAX_LEN - 1, file);
-	token = strtok(line, "\t");
+	token = strtok(line, " ");
 	graph_info->vertice_number = convert_atoi(token, strlen(token), 10);
-	token = strtok(NULL, "\t");
+	token = strtok(NULL, " ");
 	graph_info->edge_number = convert_atoi(token, strlen(token), 10);
 
 	/* Create matrix */
@@ -47,11 +47,11 @@ void setupGraph(GraphInfo *graph_info, const char *path){
 	j = 0;
 	while(fgets(line, MAX_LEN - 1, file))
 	{
-		token = strtok(line, "\t");
+		token = strtok(line, " ");
 		while(token != NULL){
 			graph[i][j] = convert_atoi(token, strlen(token), 10);
 			j++;
-			token = strtok(NULL, "\t");
+			token = strtok(NULL, " ");
 		}
 		i++;
 		j = 0;
